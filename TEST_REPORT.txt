@@ -1,1 +1,0 @@
-TEST OK: sve lokalne datoteke i reference postoje.

@@ -12,11 +12,14 @@
 </head>
 <body>
 
+<a class="sticky-book" href="#rezervacija">Provjeri termin / rezerviraj</a>
+<a class="wa-float" href="https://wa.me/385952512033?text=Pozdrav%2C%20zanima%20me%20Apartman%20TKON%20za%206%20osoba." target="_blank" rel="noopener">💬</a>
+
 <header class="hero">
   <div class="hero-overlay"></div>
   <nav class="topbar">
     <div class="pin">📍 TKON • OTOK PAŠMAN • HRVATSKA</div>
-    <a class="small-btn" href="https://www.booking.com/Share-uXz9baf" target="_blank" rel="noopener">Booking</a>
+    <a class="small-btn" href="#rezervacija">Rezervacija</a>
   </nav>
 
   <div class="hero-content">
@@ -26,6 +29,10 @@
       <div class="pill">6 OSOBA</div>
       <div class="stars">★★★★★</div>
       <p class="hero-sub">Velika privatna terasa s pogledom na more</p>
+      <div class="hero-actions">
+        <a href="https://www.booking.com/Share-j8k13z" target="_blank" rel="noopener">Rezerviraj odmah</a>
+        <a href="https://wa.me/385952512033" target="_blank" rel="noopener">WhatsApp upit</a>
+      </div>
     </div>
 
     <aside class="qr-card">
@@ -33,7 +40,7 @@
       <h2>APARTMAN<br><span>TKON</span></h2>
       <p>6 osoba</p>
       <img src="qr_apartman_tkon.png" alt="QR kod Apartman TKON">
-      <strong>Skeniraj i saznaj više</strong>
+      <strong>Skeniraj i rezerviraj</strong>
     </aside>
   </div>
 </header>
@@ -49,7 +56,7 @@
       <a href="https://wa.me/385952512033" target="_blank" rel="noopener">💬<span>WhatsApp</span><small>Pošalji upit</small></a>
       <a href="mailto:alen.sekula@gmail.com">✉️<span>E-mail</span><small>alen.sekula@gmail.com</small></a>
       <a href="https://www.google.com/maps/search/?api=1&query=Popa%20%C5%A0imuna%20%C4%8Cali%C4%87a%205%2C%20Tkon%2C%20Croatia" target="_blank" rel="noopener">📍<span>Navigacija</span><small>Otvori kartu</small></a>
-      <a href="https://www.booking.com/Share-uXz9baf" target="_blank" rel="noopener">🏖️<span>Booking</span><small>Pogledaj ponudu</small></a>
+      <a href="https://www.booking.com/Share-j8k13z" target="_blank" rel="noopener">🏖️<span>Booking</span><small>Pogledaj ponudu</small></a>
     </div>
   </section>
 
@@ -69,36 +76,72 @@
 
   <section class="gallery">
     <h2>Galerija</h2>
-    <div class="gallery-grid">
-      <figure><img src="photo_01.jpg" alt="Terasa s pogledom na more"><figcaption>Terasa s pogledom</figcaption></figure>
-      <figure><img src="photo_02.jpg" alt="Blagovaonica"><figcaption>Blagovaonica</figcaption></figure>
-      <figure><img src="photo_03.jpg" alt="Kuhinja"><figcaption>Kuhinja</figcaption></figure>
-      <figure><img src="photo_04.jpg" alt="Spavaća soba"><figcaption>Spavaća soba</figcaption></figure>
-      <figure><img src="photo_05.jpg" alt="Dvokrevetna soba"><figcaption>Dvokrevetna soba</figcaption></figure>
-      <figure><img src="photo_06.jpg" alt="Soba s krevetima"><figcaption>Soba s krevetima</figcaption></figure>
-      <figure><img src="photo_07.jpg" alt="WC"><figcaption>WC</figcaption></figure>
-      <figure><img src="photo_08.jpg" alt="Tuš"><figcaption>Tuš</figcaption></figure>
+    <p class="gallery-note">Fotografije se listaju lijevo/desno. Dodirni sliku za veći prikaz.</p>
+    <div class="slider-wrap">
+      <button class="slide-btn left" onclick="moveGallery(-1)" aria-label="Prethodna slika">‹</button>
+      <div class="gallery-slider" id="gallerySlider">
+        <figure><a href="#img1"><img src="photo_01.jpg" alt="Terasa s pogledom na more"></a><figcaption>Terasa s pogledom</figcaption></figure>
+        <figure><a href="#img2"><img src="photo_02.jpg" alt="Blagovaonica"></a><figcaption>Blagovaonica</figcaption></figure>
+        <figure><a href="#img3"><img src="photo_03.jpg" alt="Kuhinja"></a><figcaption>Kuhinja</figcaption></figure>
+        <figure><a href="#img4"><img src="photo_04.jpg" alt="Spavaća soba"></a><figcaption>Spavaća soba</figcaption></figure>
+        <figure><a href="#img5"><img src="photo_05.jpg" alt="Dvokrevetna soba"></a><figcaption>Dvokrevetna soba</figcaption></figure>
+        <figure><a href="#img6"><img src="photo_06.jpg" alt="Soba s krevetima"></a><figcaption>Soba s krevetima</figcaption></figure>
+        <figure><a href="#img7"><img src="photo_07.jpg" alt="WC"></a><figcaption>WC</figcaption></figure>
+        <figure><a href="#img8"><img src="photo_08.jpg" alt="Tuš"></a><figcaption>Tuš</figcaption></figure>
+      </div>
+      <button class="slide-btn right" onclick="moveGallery(1)" aria-label="Sljedeća slika">›</button>
+    </div>
+  </section>
+
+  <section class="reservation" id="rezervacija">
+    <h2>Rezervacija i dostupnost</h2>
+    <p class="reservation-lead">Za točan kalendar slobodnih termina otvori Booking ili pošalji direktan upit preko WhatsAppa.</p>
+    <div class="reservation-grid">
+      <div class="calendar-card">
+        <div class="calendar-head">
+          <button onclick="changeMonth(-1)">‹</button>
+          <strong id="calendarTitle">Kalendar</strong>
+          <button onclick="changeMonth(1)">›</button>
+        </div>
+        <div class="calendar-week"><span>Pon</span><span>Uto</span><span>Sri</span><span>Čet</span><span>Pet</span><span>Sub</span><span>Ned</span></div>
+        <div id="calendarDays" class="calendar-days"></div>
+        <p class="calendar-info">Pregledni kalendar na stranici. Stvarnu dostupnost i cijenu provjeri na Bookingu.</p>
+      </div>
+      <div class="reserve-card">
+        <h3>Provjeri slobodan termin</h3>
+        <p>Najbrže je provjeriti dostupnost preko Bookinga ili poslati direktan upit.</p>
+        <a class="reserve-main" href="https://www.booking.com/Share-j8k13z" target="_blank" rel="noopener">Otvori Booking kalendar</a>
+        <a class="reserve-alt" href="https://wa.me/385952512033?text=Pozdrav%2C%20zanima%20me%20dostupnost%20Apartmana%20TKON%20za%206%20osoba." target="_blank" rel="noopener">Pošalji WhatsApp upit</a>
+        <a class="reserve-alt" href="mailto:alen.sekula@gmail.com?subject=Upit%20za%20Apartman%20TKON%20-%206%20osoba">Pošalji e-mail upit</a>
+      </div>
     </div>
   </section>
 
   <section class="map-section">
     <h2>Lokacija</h2>
     <p>Apartman se nalazi u Tkonu na otoku Pašmanu, u blizini mora, plaže i centra mjesta.</p>
+    <div class="map-frame">
+      <iframe title="Lokacija Apartman TKON" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Popa%20%C5%A0imuna%20%C4%8Cali%C4%87a%205%2C%20Tkon%2C%20Croatia&output=embed"></iframe>
+    </div>
     <a class="map-btn" href="https://www.google.com/maps/search/?api=1&query=Popa%20%C5%A0imuna%20%C4%8Cali%C4%87a%205%2C%20Tkon%2C%20Croatia" target="_blank" rel="noopener">Otvori Google Maps navigaciju</a>
   </section>
 </main>
 
 <footer>
-  <div>
-    <p>📞 095 251 2033</p>
-    <p>✉️ alen.sekula@gmail.com</p>
-  </div>
+  <div><p>📞 095 251 2033</p><p>✉️ alen.sekula@gmail.com</p></div>
   <div class="footer-title">Vaš odmor počinje ovdje ❤</div>
-  <div>
-    <p>📍 Tkon, otok Pašman</p>
-    <p>🏖️ Apartman TKON</p>
-  </div>
+  <div><p>📍 Tkon, otok Pašman</p><p>🏖️ Apartman TKON</p></div>
 </footer>
 
+<div class="lightbox" id="img1"><a href="#" class="close">×</a><img src="photo_01.jpg" alt="Terasa s pogledom"></div>
+<div class="lightbox" id="img2"><a href="#" class="close">×</a><img src="photo_02.jpg" alt="Blagovaonica"></div>
+<div class="lightbox" id="img3"><a href="#" class="close">×</a><img src="photo_03.jpg" alt="Kuhinja"></div>
+<div class="lightbox" id="img4"><a href="#" class="close">×</a><img src="photo_04.jpg" alt="Spavaća soba"></div>
+<div class="lightbox" id="img5"><a href="#" class="close">×</a><img src="photo_05.jpg" alt="Dvokrevetna soba"></div>
+<div class="lightbox" id="img6"><a href="#" class="close">×</a><img src="photo_06.jpg" alt="Soba s krevetima"></div>
+<div class="lightbox" id="img7"><a href="#" class="close">×</a><img src="photo_07.jpg" alt="WC"></div>
+<div class="lightbox" id="img8"><a href="#" class="close">×</a><img src="photo_08.jpg" alt="Tuš"></div>
+
+<script src="script.js"></script>
 </body>
 </html>

@@ -39,35 +39,41 @@ jobs:
           import json, re, urllib.request
           from datetime import datetime, timedelta
 
-          ICS_URL = "https://ical.booking.com/v1/export?t=f417174c-656a-4f9d-b8eb-b26d0589cefd"
+          ICS_URLS = [
+              "https://ical.booking.com/v1/export?t=f417174c-656a-4f9d-b8eb-b26d0589cefd",
+              "https://www.airbnb.com/calendar/ical/903230845479392549.ics?t=0d3f54a3d02143a0b71c9f12ff79d433&locale=hr"
+          ]
 
           def parse_date(s):
               return datetime.strptime(s[:8], "%Y%m%d").date()
 
-          req = urllib.request.Request(
-              ICS_URL,
-              headers={
-                  "User-Agent": "Mozilla/5.0",
-                  "Accept": "text/calendar,*/*"
-              }
-          )
-
-          text = urllib.request.urlopen(req, timeout=30).read().decode("utf-8", "ignore")
-          text = re.sub(r"\r?\n[ \t]", "", text)
-
           busy = []
-          for ev in text.split("BEGIN:VEVENT")[1:]:
-              ms = re.search(r"DTSTART(?:;[^:\r\n]*)?:(\d{8})", ev)
-              me = re.search(r"DTEND(?:;[^:\r\n]*)?:(\d{8})", ev)
-              if not ms or not me:
-                  continue
 
-              start = parse_date(ms.group(1))
-              end = parse_date(me.group(1))
-              d = start
-              while d < end:
-                  busy.append(d.isoformat())
-                  d += timedelta(days=1)
+          for ICS_URL in ICS_URLS:
+              req = urllib.request.Request(
+                  ICS_URL,
+                  headers={
+                      "User-Agent": "Mozilla/5.0",
+                      "Accept": "text/calendar,*/*"
+                  }
+              )
+
+              text = urllib.request.urlopen(req, timeout=30).read().decode("utf-8", "ignore")
+              text = re.sub(r"\r?\n[ \t]", "", text)
+
+              for ev in text.split("BEGIN:VEVENT")[1:]:
+                  ms = re.search(r"DTSTART(?:;[^:\r\n]*)?:(\d{8})", ev)
+                  me = re.search(r"DTEND(?:;[^:\r\n]*)?:(\d{8})", ev)
+                  if not ms or not me:
+                      continue
+
+                  start = parse_date(ms.group(1))
+                  end = parse_date(me.group(1))
+                  d = start
+
+                  while d < end:
+                      busy.append(d.isoformat())
+                      d += timedelta(days=1)
 
           out = {
               "updated": datetime.utcnow().isoformat() + "Z",

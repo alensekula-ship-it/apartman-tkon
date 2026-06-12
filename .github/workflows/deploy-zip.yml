@@ -2,17 +2,25 @@ name: Deploy ZIP Website
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   workflow_dispatch:
+  schedule:
+    - cron: "0 */6 * * *"
 
 permissions:
   contents: read
   pages: write
   id-token: write
 
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
 jobs:
   deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
 
     steps:
@@ -25,6 +33,53 @@ jobs:
           mkdir site
           unzip -o website.zip -d site
 
+      - name: Create occupied dates from iCal
+        run: |
+          python3 - <<'PY'
+          import json, re, urllib.request
+          from datetime import datetime, timedelta
+
+          ICS_URL = "https://ical.booking.com/v1/export?t=f417174c-656a-4f9d-b8eb-b26d0589cefd"
+
+          def parse_date(s):
+              return datetime.strptime(s[:8], "%Y%m%d").date()
+
+          req = urllib.request.Request(
+              ICS_URL,
+              headers={
+                  "User-Agent": "Mozilla/5.0",
+                  "Accept": "text/calendar,*/*"
+              }
+          )
+
+          text = urllib.request.urlopen(req, timeout=30).read().decode("utf-8", "ignore")
+          text = re.sub(r"\r?\n[ \t]", "", text)
+
+          busy = []
+          for ev in text.split("BEGIN:VEVENT")[1:]:
+              ms = re.search(r"DTSTART(?:;[^:\r\n]*)?:(\d{8})", ev)
+              me = re.search(r"DTEND(?:;[^:\r\n]*)?:(\d{8})", ev)
+              if not ms or not me:
+                  continue
+
+              start = parse_date(ms.group(1))
+              end = parse_date(me.group(1))
+              d = start
+              while d < end:
+                  busy.append(d.isoformat())
+                  d += timedelta(days=1)
+
+          out = {
+              "updated": datetime.utcnow().isoformat() + "Z",
+              "busy": sorted(set(busy))
+          }
+
+          with open("site/busy-dates.json", "w", encoding="utf-8") as f:
+              json.dump(out, f, ensure_ascii=False, indent=2)
+
+          print("Busy dates:", len(out["busy"]))
+          PY
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
@@ -34,4 +89,5 @@ jobs:
           path: site
 
       - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
